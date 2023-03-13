@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .eslintcache
+package-lock.json
+src/mock/data.json
+src/mock/data.json
+package-lock.json
