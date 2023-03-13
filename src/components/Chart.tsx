@@ -1,10 +1,23 @@
-import { BarChart, ResponsiveContainer, YAxis } from "recharts";
+import {
+  Area,
+  Bar,
+  BarChart,
+  ComposedChart,
+  Legend,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import type { IChart } from "../types/chart";
 
 const Chart = ({ data }: { data: IChart[] }) => {
   return (
     <ResponsiveContainer width="70%" height={500}>
-      <BarChart data={data}>
+      <ComposedChart
+        data={data}
+        margin={{ top: 40, right: 40, bottom: 30, left: 40 }}
+      >
+        <XAxis dataKey="time" />
         <YAxis
           dataKey="value_bar"
           yAxisId="right"
@@ -24,7 +37,20 @@ const Chart = ({ data }: { data: IChart[] }) => {
             position: "insideLeft",
           }}
         />
-      </BarChart>
+        <Area
+          yAxisId="left"
+          type="monotone"
+          dataKey="value_area"
+          fill="#82ca9d"
+          stroke="#82ca9d"
+        />
+        <Bar
+          yAxisId="right"
+          dataKey="value_bar"
+          fill="rgba(36, 91, 254, 0.4)"
+        />
+        <Legend />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };

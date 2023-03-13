@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { readData } from "../apis/chart";
 import type { IChart, IChartResponse } from "../types/chart";
@@ -13,7 +14,8 @@ const useChart = () => {
           id,
           value_area,
           value_bar,
-          time,
+          time: dayjs(time).format("HH:mm"),
+          value_time: time,
         }),
       );
       setChartData(newData);
