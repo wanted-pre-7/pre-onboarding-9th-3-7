@@ -5,10 +5,12 @@ import {
   ComposedChart,
   Legend,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import type { IChart } from "../types/chart";
+import CustomToolTip from "./CustomToolTip";
 
 const Chart = ({ data }: { data: IChart[] }) => {
   return (
@@ -50,6 +52,7 @@ const Chart = ({ data }: { data: IChart[] }) => {
           fill="rgba(36, 91, 254, 0.4)"
         />
         <Legend />
+        <Tooltip content={<CustomToolTip />} />
       </ComposedChart>
     </ResponsiveContainer>
   );
