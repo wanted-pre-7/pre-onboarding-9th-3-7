@@ -7,6 +7,7 @@ export interface IChart {
   value_area: number;
   value_bar: number;
   value_time: string;
+  time: string;
 }
 
 export interface ITooltip {

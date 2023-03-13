@@ -1,10 +1,15 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { readData } from "../apis/chart";
 import type { IChart, IChartResponse } from "../types/chart";
 
 const useChart = () => {
   const [chartData, setChartData] = useState<IChart[]>([]);
+
+  const locations = useMemo(() => {
+    if (!chartData) return [];
+    return [...new Set(chartData.map((data) => data.id))];
+  }, [chartData]);
 
   useEffect(() => {
     (async () => {
@@ -21,7 +26,7 @@ const useChart = () => {
       setChartData(newData);
     })();
   }, []);
-  return [chartData];
+  return { data: chartData, locations: locations };
 };
 
 export default useChart;
