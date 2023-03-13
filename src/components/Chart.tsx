@@ -1,7 +1,6 @@
 import {
   Area,
   Bar,
-  BarChart,
   ComposedChart,
   Legend,
   ResponsiveContainer,

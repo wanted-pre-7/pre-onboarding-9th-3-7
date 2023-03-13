@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import type { ITooltip } from "../types/chart";
 
-const CustomToolTip = ({ active, payload }: any) => {
+const CustomToolTip = ({ active, payload }: ITooltip) => {
   console.log("active", active, "payload", payload);
   if (active && payload) {
     return (
