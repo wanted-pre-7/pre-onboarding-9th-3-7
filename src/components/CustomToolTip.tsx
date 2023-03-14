@@ -10,24 +10,12 @@ const CustomToolTip = ({
         <h4 className="tooltip--id">📈 {payload[0].payload.id}</h4>
         <div className="tooltip--value-wrapper">
           <p className="tooltip--value">
-            <span
-              style={{
-                color: `${payload[1].color}`,
-              }}
-            >
-              value_area
-            </span>
-            : {payload[0].payload.value_area}
+            <span className="value-area">value_area</span>:{" "}
+            {payload[0].payload.value_area}
           </p>
           <p className="tooltip--value">
-            <span
-              style={{
-                color: `${payload[0].color}`,
-              }}
-            >
-              value_bar
-            </span>
-            : {payload[0].payload.value_bar}
+            <span className="value-bar">value_bar</span>:{" "}
+            {payload[0].payload.value_bar}
           </p>
         </div>
       </div>

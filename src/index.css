@@ -1,7 +1,46 @@
+p,
+h4 {
+  padding: 0;
+  margin: 0;
+}
+
 .App {
   max-width: 1440px;
   margin-inline: auto;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 80vh;
+  gap: 0.25rem;
+}
+
+.tooltip {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+}
+
+.tooltip--id {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 1rem;
+}
+
+.tooltip--value-wrapper {
+  padding: 1rem;
+}
+
+.tooltip--value {
+  margin-bottom: 0.25rem;
+}
+
+.value-area {
+  color: #82ca9d;
+}
+
+.value-bar {
+  color: #8884d8;
+}
+
+.recharts-tooltip-wrapper:focus-visible {
+  outline: none;
 }
