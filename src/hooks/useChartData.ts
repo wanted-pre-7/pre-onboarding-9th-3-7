@@ -13,7 +13,7 @@ const useChartData = () => {
       for (const key in data) {
         chartArray.push({
           time: new Date(key).toLocaleTimeString().replace("오후 ", ""),
-          value_time: key,
+
           ...data[key],
         });
       }
