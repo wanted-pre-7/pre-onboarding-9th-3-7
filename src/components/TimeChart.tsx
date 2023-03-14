@@ -16,7 +16,7 @@ import { Chart } from "react-chartjs-2";
 import useData from "../hooks/useData";
 
 const TimeChart = () => {
-  const { labels, areaData, barData, areaMax, barMax } = useData();
+  const { labels, areaData, barData, areaMax, barMax, idList } = useData();
 
   const data = {
     labels,
@@ -67,6 +67,16 @@ const TimeChart = () => {
         max: areaMax,
         grid: {
           display: false,
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        mode: "index",
+        filter: (e) => !(e.dataIndex === 0),
+        callbacks: {
+          title: (tooltipItems) =>
+            idList[tooltipItems[0].dataIndex]?.toString(),
         },
       },
     },
