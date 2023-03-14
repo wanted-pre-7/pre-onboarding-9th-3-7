@@ -1,5 +1,11 @@
+import ChartView from "./component/ChartView";
+
 const App = () => {
-  return <div className="App">Hello World</div>;
+  return (
+    <div>
+      <ChartView />
+    </div>
+  );
 };
 
 export default App;
