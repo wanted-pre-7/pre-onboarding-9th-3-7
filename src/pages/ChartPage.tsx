@@ -2,25 +2,27 @@ import Chart from "react-apexcharts";
 import { getChartData } from "../utils/hooks";
 
 const ChartPage = () => {
-  const { data, isloading } = getChartData();
+  const { data, isLoading } = getChartData();
 
-  if (isloading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-  const Xaxis = Object.keys(data).map((v) => v.split(" ")[1]);
-
+  const labels = Object.keys(data).map((v) => v.split(" ")[1]);
+  const areaData = Object.values(data).map((v) => v.value_area);
+  const barData = Object.values(data).map((v) => v.value_bar);
+  console.log(data);
   return (
     <Chart
       series={[
         {
           name: "TEAM A",
           type: "column",
-          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
+          data: barData,
         },
         {
           name: "TEAM B",
           type: "area",
-          data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+          data: areaData,
         },
       ]}
       options={{
@@ -51,13 +53,13 @@ const ChartPage = () => {
             stops: [0, 100, 100, 100],
           },
         },
-        labels: Xaxis.slice(0, 11),
+        labels: labels,
         markers: {
           size: 0,
         },
         yaxis: {
           title: {
-            text: "Points",
+            text: "values",
           },
           min: 0,
         },
