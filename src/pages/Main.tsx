@@ -1,7 +1,11 @@
-import React from "react";
+import TimeChart from "../components/TimeChart";
 
 const Main = () => {
-  return <div></div>;
+  return (
+    <div>
+      <TimeChart />
+    </div>
+  );
 };
 
 export default Main;
