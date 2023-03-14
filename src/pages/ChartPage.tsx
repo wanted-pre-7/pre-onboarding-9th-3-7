@@ -1,4 +1,6 @@
 import Chart from "react-apexcharts";
+import { renderToString } from "react-dom/server";
+import CustomTooltip from "../components/Tooltip";
 import { getChartData } from "../utils/hooks";
 
 const ChartPage = () => {
@@ -10,17 +12,18 @@ const ChartPage = () => {
   const labels = Object.keys(data).map((v) => v.split(" ")[1]);
   const areaData = Object.values(data).map((v) => v.value_area);
   const barData = Object.values(data).map((v) => v.value_bar);
-  console.log(data);
+  const idData = Object.values(data).map((v) => v.id);
+
   return (
     <Chart
       series={[
         {
-          name: "TEAM A",
+          name: "BAR",
           type: "column",
           data: barData,
         },
         {
-          name: "TEAM B",
+          name: "AREA",
           type: "area",
           data: areaData,
         },
@@ -64,15 +67,18 @@ const ChartPage = () => {
           min: 0,
         },
         tooltip: {
-          shared: true,
-          intersect: false,
-          y: {
-            formatter: function (y) {
-              if (typeof y !== "undefined") {
-                return y.toFixed(0) + " points";
-              }
-              return y;
-            },
+          enabled: true,
+          custom: ({ dataPointIndex }) => {
+            return renderToString(
+              <CustomTooltip
+                active={true}
+                data={{
+                  id: idData[dataPointIndex],
+                  area: areaData[dataPointIndex],
+                  bar: barData[dataPointIndex],
+                }}
+              />,
+            );
           },
         },
       }}
