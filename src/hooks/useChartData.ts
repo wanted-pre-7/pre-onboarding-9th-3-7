@@ -4,27 +4,25 @@ import type { IChart, IResponse } from "../types/chart";
 
 const useChartData = () => {
   const [chartData, setChartData] = useState<IChart[]>([]);
-
   useEffect(() => {
-    const chartArray: IChart[] = [];
     const getChart = async () => {
       const data: IResponse = await getChartData();
 
-      for (const key in data) {
-        chartArray.push({
-          time: new Date(key).toLocaleTimeString().replace("오후 ", ""),
+      const arrData: IChart[] = Object.entries(data).map(([time, item]) => ({
+        time: new Date(time).toLocaleTimeString(),
 
-          ...data[key],
-        });
-      }
+        ...item,
+      }));
 
-      setChartData(chartArray);
+      setChartData(arrData);
     };
 
     getChart();
   }, []);
 
-  return { data: chartData };
+  const chartDistrict = [...new Set(chartData.map((data) => data.id))].sort();
+
+  return { data: chartData, chartDistrict };
 };
 
 export default useChartData;

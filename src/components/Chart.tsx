@@ -3,6 +3,7 @@ import {
   Area,
   Bar,
   CartesianGrid,
+  Cell,
   ComposedChart,
   Legend,
   ResponsiveContainer,
@@ -16,11 +17,52 @@ import CustomToolTip from "./CustomToolTip";
 type Category = "전체" | "area" | "bar";
 const CATEGORY: Category[] = ["전체", "area", "bar"];
 
-const Chart = () => {
+const Chart = ({
+  district,
+  handleClick,
+}: {
+  district: string;
+  handleClick: (value: string) => void;
+}) => {
   const { data } = useChartData();
+  const [category, setCategory] = useState<Category>("전체");
+
+  const [dot, setDot] = useState("");
+
+  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setCategory(e.currentTarget.textContent as Category);
+  };
+  const CustomizedDot = (props: any) => {
+    const { cx, cy, stroke, payload } = props;
+
+    if (payload.id === district) {
+      return (
+        <svg x={cx - 3} y={cy - 3} fill="white">
+          <g transform="translate(4 4)">
+            <circle r="4" fill={stroke} />
+            <circle r="2" fill={stroke} />
+          </g>
+        </svg>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <>
+      <div className="btn-wrapper">
+        {CATEGORY.map((item) => (
+          <button
+            className={`${item === category ? "btn-active" : "btn"}`}
+            key={item}
+            onClick={handleClickCategory}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
           data={data}
@@ -54,21 +96,42 @@ const Chart = () => {
               offset: -10,
             }}
           />
-          <Tooltip content={<CustomToolTip />} />
+          <Tooltip
+            content={
+              <CustomToolTip setDot={setDot} active={false} payload={[]} />
+            }
+          />
           <Legend height={50} />
-          <Bar
-            dataKey="value_bar"
-            barSize={20}
-            fill="#8884d8"
-            yAxisId="right"
-          />
-          <Area
-            type="basis"
-            dataKey="value_area"
-            fill="#82ca9d"
-            stroke="#82ca9d"
-            yAxisId="left"
-          />
+          {category === "전체" || category === "bar" ? (
+            <Bar
+              dataKey="value_bar"
+              barSize={20}
+              fill="#8884d8"
+              yAxisId="right"
+              onClick={(data) => handleClick(data.id)}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
+                />
+              ))}
+            </Bar>
+          ) : null}
+          {category === "전체" || category === "area" ? (
+            <Area
+              type="monotone"
+              dataKey="value_area"
+              fill="#82ca9d"
+              stroke="#82ca9d"
+              yAxisId="left"
+              onClick={(e: any) => {
+                handleClick(dot);
+              }}
+              dot={<CustomizedDot />}
+              // label={<CustomizedLabel />}
+            />
+          ) : null}
         </ComposedChart>
       </ResponsiveContainer>
     </>
