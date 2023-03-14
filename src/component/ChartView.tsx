@@ -1,4 +1,3 @@
-import { getChartData } from "../api/chartData";
 import {
   AreaChart,
   Area,
@@ -9,6 +8,8 @@ import {
   ComposedChart,
   Bar,
 } from "recharts";
+import CustomTooltip from "./CustomTooltip";
+import { getChartData } from "../api/chartData";
 
 const mockData = getChartData();
 
@@ -16,8 +17,8 @@ const ChartView = () => {
   getChartData();
   return (
     <ComposedChart
-      width={1000}
-      height={500}
+      width={1200}
+      height={400}
       data={mockData}
       margin={{
         top: 10,
@@ -30,7 +31,7 @@ const ChartView = () => {
       <XAxis dataKey="time" />
       <YAxis yAxisId={"bar"} orientation="right" label={"bar"} />
       <YAxis yAxisId={"area"} label="area" />
-      <Tooltip />
+      <Tooltip content={<CustomTooltip />} />
       <Area
         type="monotone"
         dataKey="value_area"
