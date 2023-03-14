@@ -6,6 +6,7 @@ const Chart = ({ data }: IResData) => {
   const detailTimes: string[] = Object.keys(data).map((el) => el.split(" ")[1]);
   const Times: string[] = detailTimes.map((el) => el.slice(0, 5));
   const Values: IChartData[] = Object.values(data);
+  const idArr: string[] = Values.map((el) => el.id);
 
   const chartSeries = {
     series: [
@@ -36,6 +37,22 @@ const Chart = ({ data }: IResData) => {
           pan: false,
           reset: true,
         },
+      },
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+      enabled: true,
+      // react-apexchart 툴팁 : 현재 html string 형식으로밖에 지원하지 않음
+      custom({ series, dataPointIndex }) {
+        return `<div class="custom-tooltip">
+        <h3>${idArr[dataPointIndex]}</h3>
+        <div class="group">
+          <span class="group-bar">Bar: ${series[0][dataPointIndex]}</span>
+          <span class="group-area">Area: ${series[1][dataPointIndex]}</span>
+          <span class="group-time">Time: ${detailTimes[dataPointIndex]}</span>
+        </div>
+      </div>`;
       },
     },
     stroke: {

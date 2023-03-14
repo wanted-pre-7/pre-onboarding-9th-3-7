@@ -58,6 +58,33 @@ a {
   text-decoration:none;
   color:inherit;
 }
+
+// react-apexcharts
+.custom-tooltip {
+  padding: 5px 10px;
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  span {
+    margin-bottom: 3px;
+  }
+}
+.group-bar {
+  color: #2a8ff7;
+}
+.group-area {
+  color: #68e497;
+}
+.group-time {
+  font-style: italic;
+  color: #888;
+}
 `;
 
 export default GlobalStyle;
