@@ -73,6 +73,17 @@ const Chart = ({ data }: IChart) => {
         },
       },
     ],
+    tooltip: {
+      shared: true,
+      x: {
+        show: false,
+        formatter: function (val, { series, seriesIndex, dataPointIndex, w }) {
+          return (
+            categoryData[dataPointIndex] + "<br/>" + barData[dataPointIndex].id
+          );
+        },
+      },
+    },
   };
 
   const series = [
