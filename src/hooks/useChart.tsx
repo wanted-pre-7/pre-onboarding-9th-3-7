@@ -26,6 +26,7 @@ const useChart = () => {
       setChartData(newData);
     })();
   }, []);
+
   return { data: chartData, locations: locations };
 };
 
