@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
-
-import { fetchFlexsysData } from "./apis/api";
-
+import { fetchFlexsysData } from "./api/apis";
 import Chart from "./components/Chart";
 import GlobalStyle from "./GlobalStyle";
+import useFetchData from "./hooks/useFetchData";
 import type { IResData } from "./types/chartTypes";
 
 const App = () => {
-  const [chartData, setChartData] = useState<IResData[]>([]);
-
-  const fetchData = async () => {
-    try {
-      const res = await fetchFlexsysData();
-      if (res) setChartData(res.data);
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const chartData: IResData[] = useFetchData(fetchFlexsysData);
 
   return (
     <>
