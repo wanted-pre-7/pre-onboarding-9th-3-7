@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Chart from "../components/Chart";
 import useChartData from "../hooks/useChartData";
@@ -21,6 +22,13 @@ const Home = () => {
       district,
     });
   };
+
+  useEffect(() => {
+    if (!district && !category) {
+      searchParams.set("category", "전체");
+      searchParams.set("district", "전체");
+    }
+  }, []);
 
   return (
     <>
