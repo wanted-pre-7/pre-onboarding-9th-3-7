@@ -1,17 +1,17 @@
 import type { ApexOptions } from "apexcharts";
 import { useRef } from "react";
 import ApexCharts from "react-apexcharts";
-import type { IAreaData, IBarData, IChart } from "../types/chart";
+import type { IAreaData, IBarData, IChartProps } from "../types/chart";
 import StyledChartDiv from "./StyleChartDiv";
 import StyledButton from "./StyledButton";
 
-const Chart = ({ data }: IChart) => {
+const Chart = ({ data, searchId, updateSearchParams }: IChartProps) => {
   const barColor = "#6CB7DA";
   const areaColor = "#B5B5B3";
   const highlightColor = "#D77186";
   const chartHeight = 550;
 
-  const chartRef = useRef(null);
+  const chartRef = useRef<any>(null);
 
   const areaData: IAreaData[] = Object.entries(data)?.map(
     ([x, { id, value_area }]) => ({
@@ -25,6 +25,7 @@ const Chart = ({ data }: IChart) => {
       id,
       y: value_bar,
       x,
+      fillColor: id === searchId ? highlightColor : "",
     }),
   );
   const categoryData = Object.keys(data);
@@ -45,30 +46,8 @@ const Chart = ({ data }: IChart) => {
           const dataPointIndex = config.dataPointIndex;
 
           if (config.seriesIndex > -1 && dataPointIndex > -1) {
-            const id = barData[dataPointIndex].id;
-            const prevZoom = chartContext.zoomPanSelection;
-            chartContext.updateOptions(
-              {
-                series: [
-                  {
-                    name: "Bar",
-                    type: "bar",
-                    data: barData.map((d) => ({
-                      ...d,
-                      fillColor: d.id === id ? highlightColor : "",
-                    })),
-                  },
-                  {
-                    name: "Area",
-                    type: "area",
-                    data: areaData,
-                  },
-                ],
-              },
-              false,
-            );
-
-            chartContext.zoomX(prevZoom.minX, prevZoom.maxX);
+            const selectId = barData[dataPointIndex].id;
+            updateSearchParams({ id: selectId });
           }
         },
       },
@@ -140,51 +119,14 @@ const Chart = ({ data }: IChart) => {
     }
   };
 
-  const chartFilterHandler = (id: string) => {
+  const chartFilterHandler = (selectId: string) => {
     chartSelectReset();
-    chartRef.current?.chart.updateOptions(
-      {
-        series: [
-          {
-            name: "Bar",
-            type: "bar",
-            data: barData.map((d) => ({
-              ...d,
-              fillColor: id == d.id ? highlightColor : "",
-            })),
-          },
-          {
-            name: "Area",
-            type: "area",
-            data: areaData,
-          },
-        ],
-      },
-      false,
-    );
+    updateSearchParams({ id: selectId });
   };
 
   const chartResetHandler = () => {
     chartSelectReset();
-    chartRef.current?.chart.updateOptions(
-      {
-        series: [
-          {
-            name: "Bar",
-            type: "bar",
-            data: barData.map((d) => ({
-              ...d,
-            })),
-          },
-          {
-            name: "Area",
-            type: "area",
-            data: areaData,
-          },
-        ],
-      },
-      false,
-    );
+    updateSearchParams({});
   };
 
   return (

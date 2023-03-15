@@ -1,3 +1,4 @@
+import type { URLSearchParamsInit } from "react-router-dom";
 export interface IAreaData {
   id: string;
   y: number;
@@ -23,7 +24,13 @@ export interface IChart {
 }
 
 export interface IChartData {
-  id?: string;
-  value_area?: number;
-  value_bar?: number;
+  id: string;
+  value_area: number;
+  value_bar: number;
+}
+
+export interface IChartProps {
+  data: IChart;
+  searchId: string | null;
+  updateSearchParams: (params: URLSearchParamsInit) => void;
 }
