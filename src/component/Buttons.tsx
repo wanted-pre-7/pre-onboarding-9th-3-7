@@ -4,9 +4,14 @@ import { chartIdArr } from "../api/chartData";
 const Buttons = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const style = {
+    width: "1000px",
+    display: "flex",
+    justifyContent: "center",
+  };
 
   return (
-    <div>
+    <div style={style}>
       {chartIdArr.map((el, idx) => (
         <button
           key={idx}

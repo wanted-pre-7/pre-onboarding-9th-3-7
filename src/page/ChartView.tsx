@@ -24,13 +24,13 @@ const ChartView = () => {
     <>
       <ComposedChart
         width={1000}
-        height={600}
+        height={300}
         data={mockData}
         margin={{
           top: 10,
           right: 30,
           left: 60,
-          bottom: 300,
+          bottom: 10,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
