@@ -1,5 +1,4 @@
 import {
-  AreaChart,
   Area,
   XAxis,
   YAxis,
@@ -8,6 +7,7 @@ import {
   ComposedChart,
   Bar,
   Cell,
+  Legend,
 } from "recharts";
 import { useParams, useNavigate } from "react-router-dom";
 import CustomTooltip from "../component/CustomTooltip";
@@ -49,7 +49,8 @@ const ChartView = () => {
           label={{ value: "value_bar", angle: -90, position: "insideLeft" }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="value_bar" yAxisId={"bar"}>
+        <Legend />
+        <Bar dataKey="value_bar" yAxisId={"bar"} fill="#D9D9D9">
           {mockData.map((el, idx) => (
             <Cell
               key={idx}
