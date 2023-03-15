@@ -1,5 +1,7 @@
+import ChartPage from "./pages/ChartPage";
+
 const App = () => {
-  return <div className="App">Hello World</div>;
+  return <ChartPage />;
 };
 
 export default App;
