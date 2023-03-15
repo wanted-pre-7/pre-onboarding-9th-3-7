@@ -1,0 +1,79 @@
+p,
+h4 {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  min-width: 3rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.5rem;
+  transition: transform 0.1s linear;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.App {
+  max-width: 1440px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  gap: 0.25rem;
+}
+
+.tooltip {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+}
+
+.tooltip--id {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 1rem;
+}
+
+.tooltip--value-wrapper {
+  padding: 1rem;
+}
+
+.tooltip--value {
+  margin-bottom: 0.25rem;
+}
+
+.value-area {
+  color: #82ca9d;
+}
+
+.value-bar {
+  color: #8884d8;
+}
+
+.recharts-tooltip-wrapper:focus-visible {
+  outline: none;
+}
+
+.btn-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  background-color: #93c5fd;
+}
+
+.btn-active {
+  background-color: #60a5fa;
+}
