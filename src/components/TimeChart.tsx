@@ -12,11 +12,24 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import { Chart } from "react-chartjs-2";
+import { useRef } from "react";
+import { Chart, getElementAtEvent } from "react-chartjs-2";
+import { useNavigate } from "react-router-dom";
 import useData from "../hooks/useData";
+import useHighlight from "../hooks/useHighlight";
 
 const TimeChart = () => {
+  const navigate = useNavigate();
   const { labels, areaData, barData, areaMax, barMax, idList } = useData();
+  const { barBg, areaBg, barBorder, areaBorder } = useHighlight();
+
+  const chartRef = useRef<any>();
+
+  const handleClick = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    const element = getElementAtEvent(chartRef.current, e);
+    if (element.length > 0 && element[0].index > 0)
+      navigate(`/${idList[element[0].index]}`);
+  };
 
   const data = {
     labels,
@@ -25,11 +38,22 @@ const TimeChart = () => {
         type: "line" as const,
         label: "value_area",
         yAxisID: "value_area",
-        backgroudColor: "gray",
-        borderColor: "black",
+        backgroudColor: areaBg,
+        borderColor: areaBorder,
         borderWidth: 1,
+        pointRadius: 0,
+        segment: {
+          backgroundColor: (ctx: any) => {
+            const idx = ctx.p1.parsed.x;
+            return areaBg[idx];
+          },
+          borderColor: (ctx: any) => {
+            const idx = ctx.p1.parsed.x;
+            return areaBorder[idx];
+          },
+        },
         fill: true,
-        tension: 0.5,
+        tension: 0.4,
         order: 1,
         data: areaData,
       },
@@ -37,8 +61,8 @@ const TimeChart = () => {
         type: "bar" as const,
         label: "value_bar",
         yAxisID: "value_bar",
-        backgroudColor: "gray",
-        borderColor: "black",
+        backgroundColor: barBg,
+        borderColor: barBorder,
         borderWidth: 1,
         order: 2,
         data: barData,
@@ -83,14 +107,18 @@ const TimeChart = () => {
   };
 
   return (
-    <div>
-      <Chart
-        type="bar"
-        data={data}
-        options={options}
-        style={{ height: "500px" }}
-      />
-    </div>
+    <>
+      <div>
+        <Chart
+          type="bar"
+          data={data}
+          options={options}
+          style={{ height: "500px" }}
+          onClick={handleClick}
+          ref={chartRef}
+        />
+      </div>
+    </>
   );
 };
 
