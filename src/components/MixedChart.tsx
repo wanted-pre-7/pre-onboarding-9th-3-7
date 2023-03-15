@@ -53,14 +53,22 @@ const MixedChart = ({
         },
         labels: labels,
         markers: {
-          size: 3,
+          size: 0,
         },
-        yaxis: {
-          title: {
-            text: "values",
+        yaxis: [
+          {
+            title: {
+              text: "Bar",
+            },
           },
-          min: 0,
-        },
+          {
+            opposite: true,
+            title: {
+              text: "Area",
+            },
+            max: 150,
+          },
+        ],
         tooltip: {
           enabled: true,
           custom: ({ dataPointIndex }) => {
