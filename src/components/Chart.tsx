@@ -15,38 +15,18 @@ import useChartData from "../hooks/useChartData";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
-type Category = "전체" | "area" | "bar";
-const CATEGORY: Category[] = ["전체", "area", "bar"];
-const Chart = ({
-  district,
-  handleClick,
-}: {
+interface Props {
   district: string;
-  handleClick: (value: string) => void;
-}) => {
+  handleClickDistrict: (value: string) => void;
+  category: string;
+}
+
+const Chart = ({ district, handleClickDistrict, category }: Props) => {
   const { data } = useChartData();
-  const [category, setCategory] = useState<Category>("전체");
-
   const [dot, setDot] = useState("");
-
-  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setCategory(e.currentTarget.textContent as Category);
-  };
 
   return (
     <>
-      <div className="btn-wrapper">
-        {CATEGORY.map((item) => (
-          <button
-            className={`${item === category ? "btn-active" : "btn"}`}
-            key={item}
-            onClick={handleClickCategory}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
           data={data}
@@ -92,7 +72,7 @@ const Chart = ({
               barSize={20}
               fill="#8884d8"
               yAxisId="right"
-              onClick={(data) => handleClick(data.id)}
+              onClick={(data) => handleClickDistrict(data.id)}
             >
               {data.map((entry, index) => (
                 <Cell
@@ -110,7 +90,7 @@ const Chart = ({
               stroke="#82ca9d"
               yAxisId="left"
               onClick={() => {
-                handleClick(dot);
+                handleClickDistrict(dot);
               }}
               dot={
                 <CustomizedDot

@@ -1,28 +1,57 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Chart from "../components/Chart";
-import Header from "../components/Header";
 import useChartData from "../hooks/useChartData";
+type Category = "전체" | "area" | "bar";
+const CATEGORY: Category[] = ["전체", "area", "bar"];
 
 const Home = () => {
   const { chartDistrict } = useChartData();
-  const [district, setDistrict] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleClick = (value: string) => setDistrict(value);
+  const district = searchParams.get("district") as string;
+  const category = searchParams.get("category") as Category;
+
+  const handleClickDistrict = (value: string) => {
+    setSearchParams({ category, district: value });
+  };
+
+  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSearchParams({
+      category: e.currentTarget.textContent as Category,
+      district,
+    });
+  };
 
   return (
     <>
-      <Header />
-      <Chart district={district} handleClick={handleClick} />
+      <div className="btn-wrapper">
+        {CATEGORY.map((item) => (
+          <button
+            className={`${item === category ? "btn-active" : "btn"}`}
+            key={item}
+            onClick={handleClickCategory}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+      <Chart
+        district={district}
+        category={category}
+        handleClickDistrict={handleClickDistrict}
+      />
       <div className="btn-wrapper">
         <button
-          onClick={() => handleClick("")}
-          className={`${district === "" ? "btn-active" : "btn"}`}
+          onClick={() => handleClickDistrict("전체")}
+          className={`${district === "전체" ? "btn-active" : "btn"}`}
         >
           전체
         </button>
         {chartDistrict.map((value) => (
           <button
-            onClick={(e) => handleClick(e.currentTarget.textContent as string)}
+            onClick={(e) =>
+              handleClickDistrict(e.currentTarget.textContent as string)
+            }
             className={`${value === district ? "btn-active" : "btn"}`}
             key={value}
           >
