@@ -12,11 +12,11 @@ import {
   YAxis,
 } from "recharts";
 import useChartData from "../hooks/useChartData";
+import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
 type Category = "전체" | "area" | "bar";
 const CATEGORY: Category[] = ["전체", "area", "bar"];
-
 const Chart = ({
   district,
   handleClick,
@@ -31,22 +31,6 @@ const Chart = ({
 
   const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     setCategory(e.currentTarget.textContent as Category);
-  };
-  const CustomizedDot = (props: any) => {
-    const { cx, cy, stroke, payload } = props;
-
-    if (payload.id === district) {
-      return (
-        <svg x={cx - 3} y={cy - 3} fill="white">
-          <g transform="translate(4 4)">
-            <circle r="4" fill={stroke} />
-            <circle r="2" fill={stroke} />
-          </g>
-        </svg>
-      );
-    }
-
-    return null;
   };
 
   return (
@@ -125,11 +109,18 @@ const Chart = ({
               fill="#82ca9d"
               stroke="#82ca9d"
               yAxisId="left"
-              onClick={(e: any) => {
+              onClick={() => {
                 handleClick(dot);
               }}
-              dot={<CustomizedDot />}
-              // label={<CustomizedLabel />}
+              dot={
+                <CustomizedDot
+                  cx={0}
+                  cy={0}
+                  stroke="#86d3a4"
+                  district={district}
+                  payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
+                />
+              }
             />
           ) : null}
         </ComposedChart>

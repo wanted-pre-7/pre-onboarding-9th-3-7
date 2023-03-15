@@ -1,6 +1,5 @@
 import type { Dispatch } from "react";
 import { useEffect } from "react";
-import type { TooltipProps } from "recharts";
 import type { IChart } from "../types/chart";
 
 interface Payload {
