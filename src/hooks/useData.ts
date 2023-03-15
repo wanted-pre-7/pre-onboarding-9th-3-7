@@ -1,32 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getData from "../api/api";
 import type { IData, List } from "../types";
 
 const useData = () => {
   const [data, setData] = useState<IData>({});
-  getData.then((res) => setData(res.data?.response));
+  useEffect(() => {
+    getData.then((res) => setData(res.data?.response));
+  }, []);
 
   const labels = Object.keys(data);
   labels.unshift("");
 
   const dataArr = Object.values(data);
 
-  const idList = [];
+  const uniqueIdList: string[] = [];
+  dataArr.map(
+    (el: List) => !uniqueIdList.includes(el.id) && uniqueIdList.push(el.id),
+  );
+
+  const idList = [""];
   dataArr.map((el: List) => idList.push(el.id));
-  idList.unshift("");
 
-  const areaData = [];
-  dataArr.map((el: List) => areaData.push(el.value_area));
-  areaData.unshift(0);
-
-  const barData = [];
-  dataArr.map((el: List) => barData.push(el.value_bar));
-  barData.unshift(0);
+  const { areaData, barData } = dataArr.reduce(
+    (acc, { value_area, value_bar }) => {
+      acc.areaData.push(value_area);
+      acc.barData.push(value_bar);
+      return acc;
+    },
+    { areaData: [0], barData: [0] },
+  );
 
   const areaMax = Math.max(...areaData) * 2;
   const barMax = Math.max(...barData);
 
-  return { labels, idList, areaData, barData, areaMax, barMax };
+  return { labels, uniqueIdList, idList, areaData, barData, areaMax, barMax };
 };
 
 export default useData;
