@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { getMockDatas } from "./api/apis";
 import Chart from "./components/Chart";
-import type { IChart } from "./types/chart";
+import useData from "./hooks/useData";
 
+const Div = styled.div`
+  margin: 50px;
+`;
 const App = () => {
-  const [chartData, setChartData] = useState<IChart>({});
-
-  useEffect(() => {
-    const getChartList = async () => {
-      const res = await getMockDatas();
-      setChartData(res.data.response);
-    };
-
-    getChartList();
-  }, []);
+  const [data] = useData(getMockDatas);
 
   return (
     <div className="App">
-      <Chart data={chartData} />
+      <Div>
+        <h1>Flexsys 시계열 차트</h1>
+        <Chart data={data} />
+      </Div>
     </div>
   );
 };

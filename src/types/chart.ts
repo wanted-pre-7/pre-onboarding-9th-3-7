@@ -23,7 +23,7 @@ export interface IChart {
 }
 
 export interface IChartData {
-  id: string;
-  value_area: number;
-  value_bar: number;
+  id?: string;
+  value_area?: number;
+  value_bar?: number;
 }

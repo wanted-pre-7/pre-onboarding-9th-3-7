@@ -2,11 +2,13 @@ import type { ApexOptions } from "apexcharts";
 import { useRef } from "react";
 import ApexCharts from "react-apexcharts";
 import type { IAreaData, IBarData, IChart } from "../types/chart";
+import StyledChartDiv from "./StyleChartDiv";
+import StyledButton from "./StyledButton";
 
 const Chart = ({ data }: IChart) => {
-  const barColor = "#546E7A";
-  const areaColor = "#E91E63";
-  const highlightColor = "#00b4f0";
+  const barColor = "#6CB7DA";
+  const areaColor = "#B5B5B3";
+  const highlightColor = "#D77186";
   const chartHeight = 550;
 
   const chartRef = useRef(null);
@@ -51,7 +53,7 @@ const Chart = ({ data }: IChart) => {
                   {
                     name: "Bar",
                     type: "bar",
-                    data: barData.map((d, i) => ({
+                    data: barData.map((d) => ({
                       ...d,
                       fillColor: d.id === id ? highlightColor : "",
                     })),
@@ -69,37 +71,6 @@ const Chart = ({ data }: IChart) => {
             chartContext.zoomX(prevZoom.minX, prevZoom.maxX);
           }
         },
-        selection: function (chartContext, { xaxis, yaxis }) {
-          if (xaxis && xaxis.min && xaxis.max) {
-            const idList = [
-              ...new Set(
-                barData
-                  .slice(Math.floor(xaxis.min), Math.floor(xaxis.max))
-                  .map((d) => d.id),
-              ),
-            ];
-            chartContext.updateOptions(
-              {
-                series: [
-                  {
-                    name: "Bar",
-                    type: "bar",
-                    data: barData.map((d, i) => ({
-                      ...d,
-                      fillColor: idList.includes(d.id) ? highlightColor : "",
-                    })),
-                  },
-                  {
-                    name: "Area",
-                    type: "area",
-                    data: areaData,
-                  },
-                ],
-              },
-              false,
-            );
-          }
-        },
       },
     },
     stroke: {
@@ -112,14 +83,6 @@ const Chart = ({ data }: IChart) => {
     colors: [barColor, areaColor],
     fill: {
       opacity: [1, 0.4],
-      gradient: {
-        inverseColors: false,
-        shade: "light",
-        type: "vertical",
-        opacityFrom: 0.85,
-        opacityTo: 0.55,
-        stops: [0, 100, 100, 100],
-      },
     },
     xaxis: {
       type: "category",
@@ -165,7 +128,20 @@ const Chart = ({ data }: IChart) => {
     },
   ];
 
+  const chartSelectReset = () => {
+    const selectedDataPoints =
+      chartRef.current?.chart.w.globals.selectedDataPoints;
+
+    if (selectedDataPoints.length > 0) {
+      chartRef.current?.chart.toggleDataPointSelection(
+        0,
+        selectedDataPoints[0][0],
+      );
+    }
+  };
+
   const chartFilterHandler = (id: string) => {
+    chartSelectReset();
     chartRef.current?.chart.updateOptions(
       {
         series: [
@@ -187,7 +163,9 @@ const Chart = ({ data }: IChart) => {
       false,
     );
   };
+
   const chartResetHandler = () => {
+    chartSelectReset();
     chartRef.current?.chart.updateOptions(
       {
         series: [
@@ -210,22 +188,22 @@ const Chart = ({ data }: IChart) => {
   };
 
   return (
-    <>
+    <StyledChartDiv>
       <div>
         {ids.length > 0 &&
           ids.map((id) => {
             return (
-              <button
+              <StyledButton
                 key={id}
                 onClick={() => {
                   chartFilterHandler(id);
                 }}
               >
                 {id}
-              </button>
+              </StyledButton>
             );
           })}
-        <button onClick={chartResetHandler}>reset</button>
+        <StyledButton onClick={chartResetHandler}>선택해제</StyledButton>
       </div>
       <div id="chart">
         <ApexCharts
@@ -236,7 +214,7 @@ const Chart = ({ data }: IChart) => {
           ref={chartRef}
         />
       </div>
-    </>
+    </StyledChartDiv>
   );
 };
 export default Chart;
