@@ -11,3 +11,5 @@ export const getChartData = () => {
   }
   return mockDataArr;
 };
+
+export const chartIdArr = ["성북구", "강남구", "노원구", "중랑구", "기본"];
