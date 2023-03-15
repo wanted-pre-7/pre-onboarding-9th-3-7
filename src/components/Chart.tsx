@@ -1,24 +1,38 @@
 import type { ApexOptions } from "apexcharts";
 import ApexCharts from "react-apexcharts";
-import type { IChartData, IResData } from "../types/chartTypes";
+import type { IToChartProps, IValueData } from "../types/chartTypes";
 
-const Chart = ({ data }: IResData) => {
-  const detailTimes: string[] = Object.keys(data).map((el) => el.split(" ")[1]);
-  const Times: string[] = detailTimes.map((el) => el.slice(0, 5));
-  const Values: IChartData[] = Object.values(data);
-  const idArr: string[] = Values.map((el) => el.id);
+const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
+  const areaData: IValueData[] = Object.entries(data)?.map(
+    ([x, { id, value_area }]) => ({
+      id,
+      x,
+      y: value_area,
+    }),
+  );
+
+  const barData: IValueData[] = Object.entries(data)?.map(
+    ([x, { id, value_bar }]) => ({
+      id,
+      x,
+      y: value_bar,
+      fillColor: id === currentParams ? "#F9C80E" : "",
+    }),
+  );
+  const Times: string[] = Object.keys(data);
+  const idArr: string[] = areaData.map((el) => el.id);
 
   const chartSeries = {
     series: [
       {
         name: "Bar",
         type: "bar",
-        data: Values.map((row: IChartData) => row.value_bar),
+        data: barData,
       },
       {
         name: "Area",
         type: "area",
-        data: Values.map((row: IChartData) => row.value_area),
+        data: areaData,
       },
     ],
   };
@@ -27,60 +41,47 @@ const Chart = ({ data }: IResData) => {
     chart: {
       stacked: false,
       fontFamily: "Spoqa Han Sans Neo",
-      toolbar: {
-        tools: {
-          download: true,
-          selection: false,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: false,
-          reset: true,
+      events: {
+        click: (event, chartContext, config) => {
+          const clickedId = idArr[config.dataPointIndex];
+          if (clickedId) setSearchParams({ id: clickedId });
         },
+      },
+      selection: {
+        enabled: true,
       },
     },
     tooltip: {
       shared: true,
       intersect: false,
       enabled: true,
-      // react-apexchart 툴팁 : 현재 html string 형식으로밖에 지원하지 않음
       custom({ series, dataPointIndex }) {
         return `<div class="custom-tooltip">
         <h3>${idArr[dataPointIndex]}</h3>
         <div class="group">
           <span class="group-bar">Bar: ${series[0][dataPointIndex]}</span>
           <span class="group-area">Area: ${series[1][dataPointIndex]}</span>
-          <span class="group-time">Time: ${detailTimes[dataPointIndex]}</span>
+          <span class="group-time">Date: ${Times[dataPointIndex]}</span>
         </div>
       </div>`;
       },
     },
-    stroke: {
-      width: [0, 2, 5],
-      curve: "smooth",
+    dataLabels: {
+      enabled: false,
     },
-    plotOptions: {
-      bar: {
-        columnWidth: "50%",
-      },
+    stroke: {
+      width: [0, 2],
+      curve: "smooth",
     },
     fill: {
       opacity: [0.85, 0.25, 1],
-      gradient: {
-        inverseColors: false,
-        shade: "light",
-        type: "vertical",
-        opacityFrom: 0.85,
-        opacityTo: 0.55,
-        stops: [0, 100, 100, 100],
-      },
     },
     title: {
       text: "Flexsys - Mock data",
       align: "left",
     },
     xaxis: {
-      categories: [...Times],
+      categories: [...Times].map((el) => el.split(" ")[1]),
       tickAmount: 15,
       labels: {
         trim: false,
@@ -140,7 +141,12 @@ const Chart = ({ data }: IResData) => {
   };
 
   return (
-    <ApexCharts options={options} series={chartSeries.series} height={430} />
+    <ApexCharts
+      options={options}
+      series={chartSeries.series}
+      height={430}
+      type="bar"
+    />
   );
 };
 
