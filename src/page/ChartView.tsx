@@ -9,7 +9,7 @@ import {
   Bar,
   Cell,
 } from "recharts";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import CustomTooltip from "../component/CustomTooltip";
 import { getChartData } from "../api/chartData";
 import Buttons from "../component/Buttons";
@@ -17,12 +17,13 @@ import Buttons from "../component/Buttons";
 const mockData = getChartData();
 
 const ChartView = () => {
-  getChartData();
   const { id } = useParams();
+  const navigate = useNavigate();
+  getChartData();
   return (
     <>
       <ComposedChart
-        width={2000}
+        width={1000}
         height={600}
         data={mockData}
         margin={{
@@ -33,7 +34,7 @@ const ChartView = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="time" angle={-45} interval={1} tickSize={6} />
+        <XAxis dataKey="time" />
         <YAxis
           type="number"
           tickCount={10}
@@ -50,7 +51,11 @@ const ChartView = () => {
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="value_bar" yAxisId={"bar"}>
           {mockData.map((el, idx) => (
-            <Cell fill={el.id === id ? "#636363" : "#D9D9D9"} />
+            <Cell
+              key={idx}
+              fill={el.id === id ? "#636363" : "#D9D9D9"}
+              onClick={() => navigate("/" + el.id)}
+            />
           ))}
         </Bar>
         <Area
