@@ -21,7 +21,7 @@ const Chart = ({
   district,
   handleClick,
 }: {
-  district: string;
+  district: string | null;
   handleClick: (value: string) => void;
 }) => {
   const { data } = useChartData();

@@ -1,29 +1,34 @@
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Chart from "../components/Chart";
 import Header from "../components/Header";
 import useChartData from "../hooks/useChartData";
 
 const Home = () => {
   const { chartDistrict } = useChartData();
-  const [district, setDistrict] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const handleClick = (value: string) => setDistrict(value);
+  const currentParams = searchParams.get("id");
+
+  const handleClick = (clickedId: string) => {
+    if (clickedId) setSearchParams({ id: clickedId });
+  };
 
   return (
     <>
       <Header />
-      <Chart district={district} handleClick={handleClick} />
+      <Chart district={currentParams} handleClick={handleClick} />
       <div className="btn-wrapper">
         <button
-          onClick={() => handleClick("")}
-          className={`${district === "" ? "btn-active" : "btn"}`}
+          onClick={() => navigate("/chart")}
+          className={`${currentParams === null ? "btn-active" : "btn"}`}
         >
           전체
         </button>
         {chartDistrict.map((value) => (
           <button
             onClick={(e) => handleClick(e.currentTarget.textContent as string)}
-            className={`${value === district ? "btn-active" : "btn"}`}
+            className={`${value === currentParams ? "btn-active" : "btn"}`}
             key={value}
           >
             {value}
