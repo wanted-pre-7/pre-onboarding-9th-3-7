@@ -24,12 +24,12 @@ const CustomToolTip = ({ active, payload, setDot }: Props) => {
         <div className="tooltip--value-wrapper">
           <p className="tooltip--value">{payload[0].payload.time}</p>
           <p className="tooltip--value">
-            <span className="value-area">value_area</span>:{" "}
-            {payload[0].payload.value_area}
-          </p>
-          <p className="tooltip--value">
             <span className="value-bar">value_bar</span>:{" "}
             {payload[0].payload.value_bar}
+          </p>
+          <p className="tooltip--value">
+            <span className="value-area">value_area</span>:{" "}
+            {payload[0].payload.value_area}
           </p>
         </div>
       </div>

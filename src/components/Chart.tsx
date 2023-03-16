@@ -12,7 +12,6 @@ import {
   YAxis,
 } from "recharts";
 import useChartData from "../hooks/useChartData";
-import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
 const ChartCategory = {
