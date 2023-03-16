@@ -20,3 +20,10 @@ export interface IToChartProps {
   currentParams: string | null;
   setSearchParams: ({ id: URLSearchParams }: { id: string }) => void;
 }
+
+export interface IToButtonProps {
+  btnOption: {
+    btnText: string;
+    event: () => void;
+  };
+}
