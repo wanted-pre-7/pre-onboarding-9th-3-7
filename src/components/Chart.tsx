@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Area,
   Bar,
@@ -40,12 +40,16 @@ const Chart = ({
   const [category, setCategory] = useState<Category[]>([]);
   const [dot, setDot] = useState("");
 
-  const chartData = data.map((item) => {
-    if (item.id === district) {
-      return { ...item, [ChartCategory.AREA_HIGHLIGHT]: item.value_area };
-    }
-    return { ...item };
-  });
+  const chartData = useMemo(
+    () =>
+      data.map((item) => {
+        if (item.id === district) {
+          return { ...item, [ChartCategory.AREA_HIGHLIGHT]: item.value_area };
+        }
+        return { ...item };
+      }),
+    [data, district],
+  );
 
   return (
     <ResponsiveContainer width="100%" height={600}>
