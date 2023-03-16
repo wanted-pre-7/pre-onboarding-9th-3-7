@@ -24,6 +24,11 @@ type ChartCategoryBarType = typeof ChartCategory.BAR;
 
 type Category = ChartCategoryAreaType | ChartCategoryBarType;
 
+const barColor = "#6CB7DA";
+const areaColor = "#B5B5B3";
+const dotColor = "#B5B5B4";
+const highlightColor = "#005282";
+
 const Chart = ({
   district,
   handleClick,
@@ -50,22 +55,21 @@ const Chart = ({
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis dataKey="time" />
         <YAxis
-          yAxisId={ChartCategory.AREA}
+          yAxisId={ChartCategory.BAR}
           label={{
-            value: ChartCategory.AREA,
+            value: ChartCategory.BAR,
             angle: -90,
             position: "insideLeft",
             offset: 1,
           }}
         />
         <YAxis
-          yAxisId={ChartCategory.BAR}
+          yAxisId={ChartCategory.AREA}
           orientation="right"
           label={{
-            value: ChartCategory.BAR,
+            value: ChartCategory.AREA,
             angle: 90,
             position: "insideRight",
-
             offset: -10,
           }}
         />
@@ -88,8 +92,8 @@ const Chart = ({
         <Area
           type="monotone"
           dataKey={ChartCategory.AREA}
-          fill="#82ca9d"
-          stroke="#82ca9d"
+          fill={areaColor}
+          stroke={areaColor}
           yAxisId={ChartCategory.AREA}
           onClick={() => {
             handleClick(dot);
@@ -98,7 +102,7 @@ const Chart = ({
             <CustomizedDot
               cx={0}
               cy={0}
-              stroke="#86d3a4"
+              stroke={dotColor}
               district={district}
               payload={{
                 id: "",
@@ -114,16 +118,16 @@ const Chart = ({
         <Bar
           dataKey={ChartCategory.BAR}
           barSize={20}
-          fill="#8884d8"
+          fill={barColor}
           yAxisId={ChartCategory.BAR}
           onClick={(data) => handleClick(data.id)}
           hide={category.includes(ChartCategory.BAR)}
-          opacity={0.6}
+          opacity={0.5}
         >
           {data.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
+              fill={`${entry.id === district ? highlightColor : barColor}`}
             />
           ))}
         </Bar>
