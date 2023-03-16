@@ -16,7 +16,7 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
       id,
       x,
       y: value_bar,
-      fillColor: id === currentParams ? "#F9C80E" : "",
+      fillColor: id === currentParams ? "#f9c60ec4" : "",
     }),
   );
   const Times: string[] = Object.keys(data);
@@ -48,7 +48,17 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
         },
       },
       selection: {
-        enabled: true,
+        enabled: false,
+      },
+      toolbar: {
+        tools: {
+          selection: false,
+          zoom: false,
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+          reset: false,
+        },
       },
     },
     tooltip: {
@@ -66,6 +76,9 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
       </div>`;
       },
     },
+    grid: {
+      strokeDashArray: 5,
+    },
     dataLabels: {
       enabled: false,
     },
@@ -77,11 +90,15 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
       opacity: [0.85, 0.25, 1],
     },
     title: {
-      text: "Flexsys - Mock data",
+      text: "Flexsys - Mock data chart",
       align: "left",
     },
+    colors: ["#3f51b5b6", "	#C4BBAF"],
     xaxis: {
-      categories: [...Times].map((el) => el.split(" ")[1]),
+      tooltip: {
+        enabled: false,
+      },
+      overwriteCategories: [...Times].map((el) => el.split(" ")[1]),
       tickAmount: 15,
       labels: {
         trim: false,
@@ -96,17 +113,10 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
         },
         axisBorder: {
           show: true,
-          color: "#008FFB",
-        },
-        labels: {
-          style: {
-            colors: "#008FFB",
-          },
         },
         title: {
           text: "Bar",
           style: {
-            color: "#008FFB",
             fontSize: "14px",
           },
         },
@@ -122,17 +132,10 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
         },
         axisBorder: {
           show: true,
-          color: "#00E396",
-        },
-        labels: {
-          style: {
-            colors: "#00E396",
-          },
         },
         title: {
           text: "Area",
           style: {
-            color: "#00E396",
             fontSize: "14px",
           },
         },
@@ -141,12 +144,7 @@ const Chart = ({ data, currentParams, setSearchParams }: IToChartProps) => {
   };
 
   return (
-    <ApexCharts
-      options={options}
-      series={chartSeries.series}
-      height={430}
-      type="bar"
-    />
+    <ApexCharts options={options} series={chartSeries.series} height={430} />
   );
 };
 

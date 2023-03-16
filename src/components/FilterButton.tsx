@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import type { IToButtonProps } from "../types/chartTypes";
 
 const FilterButton = ({ btnOption }: IToButtonProps) => {
@@ -8,12 +9,34 @@ const FilterButton = ({ btnOption }: IToButtonProps) => {
   return (
     <>
       {btnText === "필터 해제" ? (
-        <button onClick={() => navigate("/chart")}>{btnText}</button>
+        <StyledButton onClick={() => navigate("/chart")}>
+          {btnText}
+        </StyledButton>
       ) : (
-        <button onClick={event}>{btnText}</button>
+        <StyledButton onClick={event}>{btnText}</StyledButton>
       )}
     </>
   );
 };
 
 export default FilterButton;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  padding: 12px 16px;
+  border-radius: 50px;
+  background-color: #2222220d;
+  color: #222;
+  font-size: 16px;
+  font-weight: 400;
+  word-break: keep-all;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  :hover {
+    background-color: #2222221a;
+  }
+`;

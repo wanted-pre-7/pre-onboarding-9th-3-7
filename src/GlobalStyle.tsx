@@ -53,6 +53,7 @@ table {
 }
 body {
   line-height: 1.2;
+  background-color: #eff4f7;
 }
 a {
   text-decoration:none;
@@ -76,10 +77,10 @@ a {
   }
 }
 .group-bar {
-  color: #2a8ff7;
+  color: #3f51b5;
 }
 .group-area {
-  color: #68e497;
+  color: #9f8b70;
 }
 .group-time {
   font-style: italic;
