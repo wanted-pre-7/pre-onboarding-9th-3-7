@@ -4,6 +4,9 @@ import Chart from "../components/Chart";
 import Header from "../components/Header";
 import useChartData from "../hooks/useChartData";
 
+type Category = "area" | "bar";
+const CATEGORY: Category[] = ["area", "bar"];
+
 const Home = () => {
   const { chartDistrict } = useChartData();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,9 +19,37 @@ const Home = () => {
       : setSearchParams({ district: value, category: category });
   };
 
+  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    district === null
+      ? setSearchParams({ category: e.currentTarget.textContent as Category })
+      : setSearchParams({
+          district: district,
+          category: e.currentTarget.textContent as Category,
+        });
+  };
+
   return (
     <>
       <Header />
+      <div className="btn-wrapper">
+        <button
+          className={`${
+            category === null || category === "전체" ? "btn-active" : "btn"
+          }`}
+          onClick={handleClickCategory}
+        >
+          전체
+        </button>
+        {CATEGORY.map((item) => (
+          <button
+            className={`${item === category ? "btn-active" : "btn"}`}
+            key={item}
+            onClick={handleClickCategory}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
       <Chart handleClick={handleClick} />
       <div className="btn-wrapper">
         <button

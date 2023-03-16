@@ -16,47 +16,15 @@ import useChartData from "../hooks/useChartData";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
-type Category = "area" | "bar";
-const CATEGORY: Category[] = ["area", "bar"];
 const Chart = ({ handleClick }: { handleClick: (value: string) => void }) => {
   const { data } = useChartData();
+  const [dot, setDot] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const district = searchParams.get("district");
   const category = searchParams.get("category");
 
-  const [dot, setDot] = useState("");
-
-  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    district === null
-      ? setSearchParams({ category: e.currentTarget.textContent as Category })
-      : setSearchParams({
-          district: district,
-          category: e.currentTarget.textContent as Category,
-        });
-  };
-
   return (
     <>
-      <div className="btn-wrapper">
-        <button
-          className={`${
-            category === null || category === "전체" ? "btn-active" : "btn"
-          }`}
-          onClick={handleClickCategory}
-        >
-          전체
-        </button>
-        {CATEGORY.map((item) => (
-          <button
-            className={`${item === category ? "btn-active" : "btn"}`}
-            key={item}
-            onClick={handleClickCategory}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
           data={data}
