@@ -25,17 +25,28 @@ const Chart = ({
   const { data } = useChartData();
 
   const [hideBarChart, setHideBarChart] = useState(false);
+  const [hideAreaChart, setHideAreaChart] = useState(false);
   const [dot, setDot] = useState("");
+
+  const handleResetHide = () => {
+    setHideBarChart(false);
+    setHideAreaChart(false);
+  };
 
   return (
     <>
+      <button className="btn" onClick={handleResetHide}>
+        전체 차트
+      </button>
       <button
         className="btn"
         onClick={() => {
-          hideBarChart ? setHideBarChart(false) : setHideBarChart(true);
+          hideBarChart
+            ? (setHideBarChart(false), setHideAreaChart(true))
+            : (setHideBarChart(true), setHideAreaChart(false));
         }}
       >
-        {hideBarChart ? "전체 차트" : "Area 차트만 보기"}
+        {hideBarChart ? "Bar 차트만 보기" : "Area 차트만 보기"}
       </button>
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
@@ -102,6 +113,7 @@ const Chart = ({
             onClick={() => {
               handleClick(dot);
             }}
+            hide={hideAreaChart}
             dot={
               <CustomizedDot
                 cx={0}
