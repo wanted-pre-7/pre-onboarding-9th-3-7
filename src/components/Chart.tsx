@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Area,
   Bar,
@@ -15,27 +16,36 @@ import useChartData from "../hooks/useChartData";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
-type Category = "전체" | "area" | "bar";
-const CATEGORY: Category[] = ["전체", "area", "bar"];
-const Chart = ({
-  district,
-  handleClick,
-}: {
-  district: string;
-  handleClick: (value: string) => void;
-}) => {
+type Category = "area" | "bar";
+const CATEGORY: Category[] = ["area", "bar"];
+const Chart = ({ handleClick }: { handleClick: (value: string) => void }) => {
   const { data } = useChartData();
-  const [category, setCategory] = useState<Category>("전체");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const district = searchParams.get("district");
+  const category = searchParams.get("category");
 
   const [dot, setDot] = useState("");
 
   const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setCategory(e.currentTarget.textContent as Category);
+    district === null
+      ? setSearchParams({ category: e.currentTarget.textContent as Category })
+      : setSearchParams({
+          district: district,
+          category: e.currentTarget.textContent as Category,
+        });
   };
 
   return (
     <>
       <div className="btn-wrapper">
+        <button
+          className={`${
+            category === null || category === "전체" ? "btn-active" : "btn"
+          }`}
+          onClick={handleClickCategory}
+        >
+          전체
+        </button>
         {CATEGORY.map((item) => (
           <button
             className={`${item === category ? "btn-active" : "btn"}`}
@@ -86,7 +96,7 @@ const Chart = ({
             }
           />
           <Legend height={50} />
-          {category === "전체" || category === "bar" ? (
+          {category === null || category === "전체" || category === "bar" ? (
             <Bar
               dataKey="value_bar"
               barSize={20}
@@ -102,7 +112,7 @@ const Chart = ({
               ))}
             </Bar>
           ) : null}
-          {category === "전체" || category === "area" ? (
+          {category === null || category === "전체" || category === "area" ? (
             <Area
               type="monotone"
               dataKey="value_area"
