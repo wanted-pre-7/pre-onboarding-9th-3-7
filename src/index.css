@@ -54,11 +54,11 @@ button:active {
 }
 
 .value-area {
-  color: #82ca9d;
+  color: #B5B5B3;
 }
 
 .value-bar {
-  color: #8884d8;
+  color: #6CB7DA;
 }
 
 .recharts-tooltip-wrapper:focus-visible {
@@ -71,9 +71,37 @@ button:active {
 }
 
 .btn {
-  background-color: #93c5fd;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  height: 2.25rem;
+  font-size: 1rem;
+
+  background: #93c5fd;
 }
 
 .btn-active {
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  height: 2.25rem;
+  font-size: 1rem;
+  
   background-color: #60a5fa;
 }
