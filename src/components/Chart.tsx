@@ -104,6 +104,7 @@ const Chart = ({
           stroke={dotColor}
           yAxisId={ChartCategory.AREA}
           hide={category.includes(ChartCategory.AREA)}
+          dot={{ r: 3 }}
         />
         <Area
           type="monotone"
@@ -114,20 +115,6 @@ const Chart = ({
           onClick={() => {
             handleClick(dot);
           }}
-          dot={
-            <CustomizedDot
-              cx={0}
-              cy={0}
-              stroke={dotColor}
-              district={district}
-              payload={{
-                id: "",
-                time: "",
-                [ChartCategory.AREA]: 0,
-                [ChartCategory.BAR]: 0,
-              }}
-            />
-          }
           hide={category.includes(ChartCategory.AREA)}
         />
 
