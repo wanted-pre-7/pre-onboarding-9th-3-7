@@ -18,6 +18,7 @@ import CustomToolTip from "./CustomToolTip";
 const ChartCategory = {
   BAR: "value_bar",
   AREA: "value_area",
+  AREA_HIGHLIGHT: "value_area_highlight",
 } as const;
 type ChartCategoryAreaType = typeof ChartCategory.AREA;
 type ChartCategoryBarType = typeof ChartCategory.BAR;
@@ -40,10 +41,17 @@ const Chart = ({
   const [category, setCategory] = useState<Category[]>([]);
   const [dot, setDot] = useState("");
 
+  const chartData = data.map((item) => {
+    if (item.id === district) {
+      return { ...item, [ChartCategory.AREA_HIGHLIGHT]: item.value_area };
+    }
+    return { ...item };
+  });
+
   return (
     <ResponsiveContainer width="100%" height={600}>
       <ComposedChart
-        data={data}
+        data={chartData}
         margin={{
           top: 20,
           right: 20,
@@ -88,7 +96,15 @@ const Chart = ({
             )
           }
         />
-
+        <Area
+          type="monotone"
+          legendType="none"
+          dataKey={ChartCategory.AREA_HIGHLIGHT}
+          fill={dotColor}
+          stroke={dotColor}
+          yAxisId={ChartCategory.AREA}
+          hide={category.includes(ChartCategory.AREA)}
+        />
         <Area
           type="monotone"
           dataKey={ChartCategory.AREA}
