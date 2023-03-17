@@ -5,7 +5,7 @@ interface Props {
   cy: number;
   stroke: string;
   payload: IChart;
-  district: string | null;
+  district: string;
 }
 
 const CustomizedDot = ({ cx, cy, stroke, payload, district }: Props) => {
