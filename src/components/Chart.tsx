@@ -17,13 +17,12 @@ import CustomToolTip from "./CustomToolTip";
 
 type Category = "전체" | "area" | "bar";
 const CATEGORY: Category[] = ["전체", "area", "bar"];
-const Chart = ({
-  district,
-  handleClick,
-}: {
+type Props = {
   district: string;
   handleClick: (value: string) => void;
-}) => {
+};
+
+const Chart = ({ district, handleClick }: Props) => {
   const { data } = useChartData();
   const [category, setCategory] = useState<Category>("전체");
 

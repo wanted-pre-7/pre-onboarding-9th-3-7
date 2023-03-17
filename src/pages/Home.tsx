@@ -1,21 +1,24 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Chart from "../components/Chart";
 import Header from "../components/Header";
 import useChartData from "../hooks/useChartData";
 
 const Home = () => {
   const { chartDistrict } = useChartData();
-  const [district, setDistrict] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const district = searchParams.get("id") || "";
 
-  const handleClick = (value: string) => setDistrict(value);
-
+  const handleClick = (value: string) => {
+    searchParams.set("id", value);
+    setSearchParams(searchParams);
+  };
   return (
     <>
       <Header />
       <Chart district={district} handleClick={handleClick} />
       <div className="btn-wrapper">
         <button
-          onClick={() => handleClick("")}
+          onClick={() => handleClick("전체")}
           className={`${district === "" ? "btn-active" : "btn"}`}
         >
           전체
