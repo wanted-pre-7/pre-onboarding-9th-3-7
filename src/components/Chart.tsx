@@ -12,13 +12,14 @@ import {
   YAxis,
 } from "recharts";
 import useChartData from "../hooks/useChartData";
+import type { Category } from "../pages/Home";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
 interface Props {
   district: string;
   handleClickDistrict: (value: string) => void;
-  category: string;
+  category: Category;
 }
 
 const Chart = ({ district, handleClickDistrict, category }: Props) => {
@@ -62,7 +63,12 @@ const Chart = ({ district, handleClickDistrict, category }: Props) => {
           />
           <Tooltip
             content={
-              <CustomToolTip setDot={setDot} active={false} payload={[]} />
+              <CustomToolTip
+                setDot={setDot}
+                active={false}
+                payload={[]}
+                category={category}
+              />
             }
           />
           <Legend height={50} />
