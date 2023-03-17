@@ -28,7 +28,7 @@ const Chart = ({ district, handleClickDistrict, category }: Props) => {
 
   return (
     <>
-      <ResponsiveContainer width="100%" height={600}>
+      <ResponsiveContainer width="100%" height={500}>
         <ComposedChart
           data={data}
           margin={{
