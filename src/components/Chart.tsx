@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Area,
   Bar,
@@ -11,26 +12,38 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import useChartData from "../hooks/useChartData";
+import getChartData from "../utils/getChartData";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
 type Category = "전체" | "area" | "bar";
 const CATEGORY: Category[] = ["전체", "area", "bar"];
+
 const Chart = ({
   district,
   handleClick,
 }: {
-  district: string;
+  district: string | null;
   handleClick: (value: string) => void;
 }) => {
-  const { data } = useChartData();
-  const [category, setCategory] = useState<Category>("전체");
-
+  const { chartData } = getChartData();
   const [dot, setDot] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const category = searchParams.get("category");
+  useEffect(() => {
+    setSearchParams((searchParams) => {
+      searchParams.set("category", "전체");
+      return searchParams;
+    });
+  }, []);
   const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setCategory(e.currentTarget.textContent as Category);
+    const { textContent } = e.currentTarget;
+
+    setSearchParams((searchParams) => {
+      searchParams.set("category", textContent ?? "전체");
+      return searchParams;
+    });
   };
 
   return (
@@ -46,10 +59,9 @@ const Chart = ({
           </button>
         ))}
       </div>
-
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
-          data={data}
+          data={chartData}
           margin={{
             top: 20,
             right: 20,
@@ -94,7 +106,7 @@ const Chart = ({
               yAxisId="right"
               onClick={(data) => handleClick(data.id)}
             >
-              {data.map((entry, index) => (
+              {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
@@ -103,25 +115,27 @@ const Chart = ({
             </Bar>
           ) : null}
           {category === "전체" || category === "area" ? (
-            <Area
-              type="monotone"
-              dataKey="value_area"
-              fill="#82ca9d"
-              stroke="#82ca9d"
-              yAxisId="left"
-              onClick={() => {
-                handleClick(dot);
-              }}
-              dot={
-                <CustomizedDot
-                  cx={0}
-                  cy={0}
-                  stroke="#86d3a4"
-                  district={district}
-                  payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
-                />
-              }
-            />
+            <>
+              <Area
+                type="monotone"
+                dataKey="value_area"
+                fill="#82ca9d"
+                stroke="#82ca9d"
+                yAxisId="left"
+                onClick={() => {
+                  handleClick(dot);
+                }}
+                dot={
+                  <CustomizedDot
+                    cx={0}
+                    cy={0}
+                    stroke="#86d3a4"
+                    district={district}
+                    payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
+                  />
+                }
+              />
+            </>
           ) : null}
         </ComposedChart>
       </ResponsiveContainer>
