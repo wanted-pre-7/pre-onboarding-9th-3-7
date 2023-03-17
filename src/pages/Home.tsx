@@ -49,6 +49,7 @@ const Home = () => {
         district={district}
         category={category}
         handleClickDistrict={handleClickDistrict}
+        handleClickCategory={handleClickCategory}
       />
       <BtnWrapper>
         <Btn left={district} right="전체" onClick={handleClickDistrict}>

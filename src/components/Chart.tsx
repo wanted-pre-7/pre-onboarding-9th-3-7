@@ -19,12 +19,31 @@ import CustomToolTip from "./CustomToolTip";
 interface Props {
   district: string;
   handleClickDistrict: (value: string) => void;
+  handleClickCategory: (value: string) => void;
   category: Category;
 }
 
-const Chart = ({ district, handleClickDistrict, category }: Props) => {
+const Chart = ({
+  district,
+  handleClickDistrict,
+  handleClickCategory,
+  category,
+}: Props) => {
   const { data } = useChartData();
   const [dot, setDot] = useState("");
+
+  const handleClickLegend = (o) => {
+    const selectLegend = o.dataKey == "value_bar" ? "bar" : "area";
+    handleClickCategory(
+      category === "전체"
+        ? o.dataKey == "value_bar"
+          ? "area"
+          : "bar"
+        : selectLegend == category
+        ? selectLegend
+        : "전체",
+    );
+  };
 
   return (
     <>
@@ -71,44 +90,44 @@ const Chart = ({ district, handleClickDistrict, category }: Props) => {
               />
             }
           />
-          <Legend height={50} />
-          {category === "전체" || category === "bar" ? (
-            <Bar
-              dataKey="value_bar"
-              barSize={20}
-              fill="#8884d8"
-              yAxisId="right"
-              onClick={(data) => handleClickDistrict(data.id)}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
-                />
-              ))}
-            </Bar>
-          ) : null}
-          {category === "전체" || category === "area" ? (
-            <Area
-              type="monotone"
-              dataKey="value_area"
-              fill="#82ca9d"
-              stroke="#82ca9d"
-              yAxisId="left"
-              onClick={() => {
-                handleClickDistrict(dot);
-              }}
-              dot={
-                <CustomizedDot
-                  cx={0}
-                  cy={0}
-                  stroke="#86d3a4"
-                  district={district}
-                  payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
-                />
-              }
-            />
-          ) : null}
+          <Legend height={50} onClick={handleClickLegend} />
+
+          <Bar
+            dataKey="value_bar"
+            barSize={20}
+            fill="#8884d8"
+            yAxisId="right"
+            onClick={(data) => handleClickDistrict(data.id)}
+            hide={category === "area"}
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
+              />
+            ))}
+          </Bar>
+
+          <Area
+            type="monotone"
+            dataKey="value_area"
+            fill="#82ca9d"
+            stroke="#82ca9d"
+            yAxisId="left"
+            onClick={() => {
+              handleClickDistrict(dot);
+            }}
+            dot={
+              <CustomizedDot
+                cx={0}
+                cy={0}
+                stroke="#86d3a4"
+                district={district}
+                payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
+              />
+            }
+            hide={category === "bar"}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </>
