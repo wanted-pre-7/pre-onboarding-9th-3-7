@@ -15,39 +15,38 @@ import useChartData from "../hooks/useChartData";
 import CustomizedDot from "./CustomizedDot";
 import CustomToolTip from "./CustomToolTip";
 
+type Category = "전체" | "area" | "bar";
+const CATEGORY: Category[] = ["전체", "area", "bar"];
 const Chart = ({
   district,
   handleClick,
 }: {
-  district: string | null;
+  district: string;
   handleClick: (value: string) => void;
 }) => {
   const { data } = useChartData();
+  const [category, setCategory] = useState<Category>("전체");
 
-  const [hideBarChart, setHideBarChart] = useState(false);
-  const [hideAreaChart, setHideAreaChart] = useState(false);
   const [dot, setDot] = useState("");
 
-  const handleResetHide = () => {
-    setHideBarChart(false);
-    setHideAreaChart(false);
+  const handleClickCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setCategory(e.currentTarget.textContent as Category);
   };
 
   return (
     <>
-      <button className="btn" onClick={handleResetHide}>
-        전체 차트
-      </button>
-      <button
-        className="btn"
-        onClick={() => {
-          hideBarChart
-            ? (setHideBarChart(false), setHideAreaChart(true))
-            : (setHideBarChart(true), setHideAreaChart(false));
-        }}
-      >
-        {hideBarChart ? "Bar 차트만 보기" : "Area 차트만 보기"}
-      </button>
+      <div className="btn-wrapper">
+        {CATEGORY.map((item) => (
+          <button
+            className={`${item === category ? "btn-active" : "btn"}`}
+            key={item}
+            onClick={handleClickCategory}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
       <ResponsiveContainer width="100%" height={600}>
         <ComposedChart
           data={data}
@@ -87,43 +86,43 @@ const Chart = ({
             }
           />
           <Legend height={50} />
-
-          <Bar
-            dataKey="value_bar"
-            barSize={20}
-            fill="#8884d8"
-            yAxisId="right"
-            onClick={(data) => handleClick(data.id)}
-            hide={hideBarChart}
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
-              />
-            ))}
-          </Bar>
-
-          <Area
-            type="monotone"
-            dataKey="value_area"
-            fill="#82ca9d"
-            stroke="#82ca9d"
-            yAxisId="left"
-            onClick={() => {
-              handleClick(dot);
-            }}
-            hide={hideAreaChart}
-            dot={
-              <CustomizedDot
-                cx={0}
-                cy={0}
-                stroke="#86d3a4"
-                district={district}
-                payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
-              />
-            }
-          />
+          {category === "전체" || category === "bar" ? (
+            <Bar
+              dataKey="value_bar"
+              barSize={20}
+              fill="#8884d8"
+              yAxisId="right"
+              onClick={(data) => handleClick(data.id)}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={`${entry.id === district ? `#444094` : `#8884d8`}`}
+                />
+              ))}
+            </Bar>
+          ) : null}
+          {category === "전체" || category === "area" ? (
+            <Area
+              type="monotone"
+              dataKey="value_area"
+              fill="#82ca9d"
+              stroke="#82ca9d"
+              yAxisId="left"
+              onClick={() => {
+                handleClick(dot);
+              }}
+              dot={
+                <CustomizedDot
+                  cx={0}
+                  cy={0}
+                  stroke="#86d3a4"
+                  district={district}
+                  payload={{ id: "", time: "", value_area: 0, value_bar: 0 }}
+                />
+              }
+            />
+          ) : null}
         </ComposedChart>
       </ResponsiveContainer>
     </>
