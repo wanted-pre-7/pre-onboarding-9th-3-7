@@ -12,7 +12,3 @@ export interface IChart {
   value_bar: number;
   time: string;
 }
-
-export interface IChartResponse {
-  [key: string]: IData;
-}

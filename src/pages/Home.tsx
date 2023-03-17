@@ -1,35 +1,70 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import Btn from "../components/Btn";
+import BtnWrapper from "../components/BtnWrapper";
 import Chart from "../components/Chart";
-import Header from "../components/Header";
 import useChartData from "../hooks/useChartData";
+export type Category = "전체" | "area" | "bar";
+const CATEGORY: Category[] = ["전체", "area", "bar"];
 
 const Home = () => {
   const { chartDistrict } = useChartData();
-  const [district, setDistrict] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const district = searchParams.get("district") as string;
+  const category = searchParams.get("category") as Category;
 
-  const handleClick = (value: string) => setDistrict(value);
+  const handleClickDistrict = (district: string) => {
+    setSearchParams({ category, district });
+  };
+
+  const handleClickCategory = (category: string) => {
+    setSearchParams({
+      category: category as Category,
+      district,
+    });
+  };
+
+  useEffect(() => {
+    if (!district && !category) {
+      searchParams.set("category", "전체");
+      searchParams.set("district", "전체");
+    }
+  }, []);
 
   return (
     <>
-      <Header />
-      <Chart district={district} handleClick={handleClick} />
-      <div className="btn-wrapper">
-        <button
-          onClick={() => handleClick("")}
-          className={`${district === "" ? "btn-active" : "btn"}`}
-        >
+      <BtnWrapper>
+        {CATEGORY.map((item) => (
+          <Btn
+            left={item}
+            right={category}
+            key={item}
+            onClick={handleClickCategory}
+          >
+            {item}
+          </Btn>
+        ))}
+      </BtnWrapper>
+      <Chart
+        district={district}
+        category={category}
+        handleClickDistrict={handleClickDistrict}
+      />
+      <BtnWrapper>
+        <Btn left={district} right="전체" onClick={handleClickDistrict}>
           전체
-        </button>
+        </Btn>
         {chartDistrict.map((value) => (
-          <button
-            onClick={(e) => handleClick(e.currentTarget.textContent as string)}
-            className={`${value === district ? "btn-active" : "btn"}`}
+          <Btn
+            left={value}
+            right={district}
+            onClick={handleClickDistrict}
             key={value}
           >
             {value}
-          </button>
+          </Btn>
         ))}
-      </div>
+      </BtnWrapper>
     </>
   );
 };
