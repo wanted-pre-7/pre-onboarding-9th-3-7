@@ -106,6 +106,10 @@ npm run dev
 
 - rechart 라이브러리는 React에서 개발되었기 때문에 React 앱에서의 사용성이 뛰어나다 또한  빠르고 가벼우며, 데이터 양이 적을 때 빠르게 렌더링 된다는 장점이 있어 사용하기로 하였다.
 
+3. 범례로 필터링 
+
+- 범례를 사용하면 사용자가 여러 개의 데이터 시리즈를 비교하는 데 도움이 된다. 각 데이터 시리즈가 어떤 색상이나 패턴으로 표시되는지 파악할 수 있으므로, 두 개 이상의 데이터 시리즈를 쉽게 비교할 수 있다는 점에서 기능을 추가하기로 결정하였다.
+
 
 <br/>
 
@@ -115,7 +119,7 @@ npm run dev
 
 - branch : 기능별 작업
 - main(master) : 최종 배포
-  <img src="https://user-images.githubusercontent.com/80516736/221170041-8b7d3762-1152-4407-a600-d9fe1e87e08d.png" width="500px">
+<img src="https://user-images.githubusercontent.com/80516736/221170041-8b7d3762-1152-4407-a600-d9fe1e87e08d.png" width="500px">
 
 <br/>
 
